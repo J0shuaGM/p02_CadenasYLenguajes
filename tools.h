@@ -27,6 +27,7 @@ void OpcionLongitud(std::string fichero_entrada, std::string fichero_salida);
 void OpcionInversa(std::string fichero_entrada, std::string fichero_salida);
 void OpcionPrefijo(std::string fichero_entrada, std::string fichero_salida);
 void OpcionSufijo(std::string fichero_entrada, std::string fichero_salida);
+void OpcionN(std::string fichero_entrada, std::string fichero_salida, int numero);
 
 void Opcode(std::string fichero_entrada, std::string fichero_salida, int numero);
 

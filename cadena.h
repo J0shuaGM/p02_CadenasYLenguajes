@@ -35,7 +35,7 @@ class Cadena {
 
     // Metodos
     int longitud(void);
-    Cadena reverse(void);
+    void reverse(void);
     Lenguaje prefijos(void);
     Lenguaje sufijos(void);
     void clear(void) { cadena_.clear(); }

@@ -31,7 +31,6 @@ Cadena::Cadena(std::string cadena) {
   for(char caracter : cadena) {
     cadena_.push_back(caracter);
   }
-  std::reverse(cadena_.begin(), cadena_.end());
   if (cadena_[0] == '&') longitud_ = 0;
   else longitud_ = cadena_.size();
 }
@@ -53,34 +52,35 @@ int Cadena::longitud(void) {
  * @brief Metodo que devulve la inversa del la cadena
  * @return reverse Devuelve la cadena invertida
 */
-Cadena Cadena::reverse(void) {
-  Cadena reverse;
-  std::reverse(reverse.cadena_.begin(), reverse.cadena_.end());
-  return reverse;
+void Cadena::reverse(void) {
+  std::vector<char> aux;
+  for(int i = cadena_.size() - 1; i >= 0; i--) aux.push_back(cadena_[i]);
+  for(int j{0}; j < aux.size(); j++) cadena_[j] = aux[j];
 }
 
 
 
 /**
- * @brief Metodo que devuelve un lenguaje con los prefijos de una cadena
- * @return prefijos devuelve un lenguaje con los prefijos
+ * @brief Metodo que devuelve un lenguaje con los sufijos de una cadena
+ * @return prefijos devuelve un lenguaje con los sufijos
 */
-Lenguaje Cadena::prefijos() {
+Lenguaje Cadena::sufijos() {
   std::string aux = " ";
-  Lenguaje prefijos; 
+  Lenguaje sufijos; 
   Cadena cadena("&");
-  prefijos.insertar(cadena);
+  sufijos.insertar(cadena);
   cadena.clear();
   for(int i = cadena_.size() -1 ; i >= 0; --i) {
     for(int j = cadena_.size() -1 ; j >= i; j--) {
       aux += cadena_[j];
     }
     cadena = Cadena(aux);
-  prefijos.insertar(cadena);
+    cadena.reverse();
+    sufijos.insertar(cadena);
     cadena.clear(); 
     aux = " ";
   }
-  return prefijos;
+  return sufijos;
 }
 
 
@@ -89,22 +89,22 @@ Lenguaje Cadena::prefijos() {
  * @brief Metodo que devuelve un lenguaje con los prefijos de una cadena
  * @return sufijos devuele un lenguaje con los prefijos
 */
-Lenguaje Cadena::sufijos() {
+Lenguaje Cadena::prefijos() {
   std::string aux = " ";
-  Lenguaje sufijo; 
+  Lenguaje prefijo; 
   Cadena cadena("&");
-  sufijo.insertar(cadena);
+  prefijo.insertar(cadena);
   cadena.clear();
   for(int i = 0; i != cadena_.size(); ++i) {
     for(int j = 0; j <= i; j++) {
       aux += cadena_[j];
     }
     cadena = Cadena(aux);
-    sufijo.insertar(cadena);
+    prefijo.insertar(cadena);
     cadena.clear(); 
     aux = " ";
   }
-  return sufijo;
+  return prefijo;
 }
 
 

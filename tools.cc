@@ -30,13 +30,13 @@
  * @param argv Array que contiene los argumentos pasados por linea de ejecucion
 */
 void Usage(int argc, char *argv[]) {
-  if (argc == 1) {
+  std::string parametro = argv[1];
+  if (argc != 4) {
 		std::cerr << argv[0] << ": Modo de empleo: ./p02_strings filein.txt fileout.txt opcode" << std::endl;
 		std::cout << "Pruebe " << argv[0] << " --help para obtener mas informacion" << std::endl;
 		exit(EXIT_SUCCESS);
 	}
-	std::string parametro{argv[1]};
-	if (parametro == "--help") {
+	if (argc == 2 && parametro == "--help") {
     std::string TextHelp = "Este programa realiza determinadas operaciones con alfabetos, cadenas y lenguajes";
     std::cout << TextHelp << std::endl;
     std::cout << "Estas son algunas de las operaciones (opcodes) que puede realizar:" << std::endl;
@@ -73,6 +73,12 @@ void Opcode(std::string fichero_entrada, std::string fichero_salida, int opcion)
     break;
   case 5: 
     OpcionSufijo(fichero_entrada, fichero_salida);
+    break;
+  case 6:
+    int valorN;
+    std::cout << "Introduzca el valor de N" << std::endl;
+    std::cin >> valorN;
+    OpcionN(fichero_entrada, fichero_salida, valorN);
   default:
     break;
   }
@@ -152,8 +158,8 @@ void OpcionInversa(std::string fichero_entrada, std::string fichero_salida) {
   Cadena objeto;
   while(input >> cadena) {
     if(iterador % 2 != 0) {
-      objeto = Cadena(cadena); 
-      objeto.reverse(); 
+      objeto = Cadena(cadena);
+      objeto.reverse();
       output << objeto;
       output << std::endl;
     }
@@ -177,7 +183,6 @@ void OpcionPrefijo(std::string fichero_entrada, std::string fichero_salida) {
   }
   Cadena objeto; 
   std::string elementos;
-  Lenguaje prefijo;
   int iterador{1};
   while(input >> elementos) {
     if(iterador % 2 != 0) {
@@ -204,14 +209,15 @@ void OpcionSufijo(std::string fichero_entrada, std::string fichero_salida) {
   }
   Cadena objeto; 
   std::string elementos;
-  Lenguaje prefijo;
   int iterador{1};
   while(input >> elementos) {
     if(iterador % 2 != 0) {
       objeto = Cadena(elementos);
-      out << objeto.sufijos(); 
+      out << objeto.sufijos();
       out << std::endl;
     }
     iterador++;
   }
 }
+
+void OpcionN(std::string fichero_entrada, std::string fichero_salida, int valorN){}
