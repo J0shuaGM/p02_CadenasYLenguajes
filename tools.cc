@@ -30,25 +30,37 @@
  * @param argv Array que contiene los argumentos pasados por linea de ejecucion
 */
 void Usage(int argc, char *argv[]) {
-  std::string parametro = argv[1];
-  if (argc != 4) {
-		std::cerr << argv[0] << ": Modo de empleo: ./p02_strings filein.txt fileout.txt opcode" << std::endl;
-		std::cout << "Pruebe " << argv[0] << " --help para obtener mas informacion" << std::endl;
-		exit(EXIT_SUCCESS);
-	}
-	if (argc == 2 && parametro == "--help") {
-    std::string TextHelp = "Este programa realiza determinadas operaciones con alfabetos, cadenas y lenguajes";
-    std::cout << TextHelp << std::endl;
-    std::cout << "Estas son algunas de las operaciones (opcodes) que puede realizar:" << std::endl;
-    std::cout << "1: Alfabeto: escribir en el fichero de salida el alfabeto asociado a cada una de las cadenas de entrada" << std::endl;
-    std::cout << "2: Longitud : escribir en el fichero de salida la longitud de cada cadena de entrada" << std::endl;
-    std::cout << "3: Inversa: escribir en el fichero de salida la inversa de cada cadena de entrada." << std::endl;
-    std::cout << "4: Prefijos: escribir en el fichero de salida el conjunto de cadenas que son prefijos de la cadena de entrada correspondiente." << std::endl;
-    std::cout << "5: Sufijos: escribir en el fichero de salida el conjunto de cadenas que son sufijos de cada cadena de entrada correspondiente." << std::endl;
-    exit(EXIT_SUCCESS);
-	}
+  switch (argc) {
+    case 2: {
+      std::string parametro = argv[1];
+      if (parametro == "--help") {
+        std::string TextHelp = "Este programa realiza determinadas operaciones con alfabetos, cadenas y lenguajes";
+        std::cout << TextHelp << std::endl;
+        std::cout << "Estas son algunas de las operaciones (opcodes) que puede realizar:" << std::endl;
+        std::cout << "1: Alfabeto: escribir en el fichero de salida el alfabeto asociado a cada una de las cadenas de entrada" << std::endl;
+        std::cout << "2: Longitud : escribir en el fichero de salida la longitud de cada cadena de entrada" << std::endl;
+        std::cout << "3: Inversa: escribir en el fichero de salida la inversa de cada cadena de entrada." << std::endl;
+        std::cout << "4: Prefijos: escribir en el fichero de salida el conjunto de cadenas que son prefijos de la cadena de entrada correspondiente." << std::endl;
+        std::cout << "5: Sufijos: escribir en el fichero de salida el conjunto de cadenas que son sufijos de cada cadena de entrada correspondiente." << std::endl;
+        exit(EXIT_SUCCESS);
+      } else {
+        std::cerr << argv[0] << ": Modo de empleo: ./p02_strings filein.txt fileout.txt opcode" << std::endl;
+		    std::cout << "Pruebe " << argv[0] << " --help para obtener mas informacion" << std::endl;
+		    exit(EXIT_SUCCESS);
+      }
+      break;
+    }
+    case 4: {
+      break;
+    }
+    default: {
+      std::cerr << argv[0] << ": Modo de empleo: ./p02_strings filein.txt fileout.txt opcode" << std::endl;
+		  std::cout << "Pruebe " << argv[0] << " --help para obtener mas informacion" << std::endl;
+		  exit(EXIT_SUCCESS);
+      break;
+    }
+  }
 }
-
 
 
 /**
@@ -74,15 +86,32 @@ void Opcode(std::string fichero_entrada, std::string fichero_salida, int opcion)
   case 5: 
     OpcionSufijo(fichero_entrada, fichero_salida);
     break;
-  case 6:
-    int valorN;
-    std::cout << "Introduzca el valor de N" << std::endl;
-    std::cin >> valorN;
-    OpcionN(fichero_entrada, fichero_salida, valorN);
   default:
     break;
   }
 }
+
+
+
+/**
+ * @brief funcion encargada de comprobar si la cadena pertenece al alfabeto
+ * @param cadena objeto que contiene la cadena
+ * @param alfabeto objeto que contiene el alfabeto al que deberia pertenecer la cadena 
+*/
+bool Comprobar(Cadena cadena, Alfabeto alfabeto) {
+  std::vector<char> caracteres = cadena.getCadena(); 
+  std::set<char> simbolos = alfabeto.getSimbolos();
+  if (caracteres[0] == '&') {
+    return true;
+  }
+  for (char c : caracteres) {
+    if (simbolos.find(c) == simbolos.end()) {
+      return false;
+    }
+  }
+  return true; 
+}
+
 
 
 /**
@@ -100,11 +129,19 @@ void OpcionAlfabeto(std::string fichero_entrada, std::string fichero_salida) {
   std::string caracteres;
   int iterador{1};
   Alfabeto objeto;
+  Cadena cadena;
   while(input >> caracteres) {
-    if (iterador % 2 == 0) {
+    if (iterador % 2 != 0) {
+      cadena = Cadena(caracteres);
+    } else if (iterador % 2 == 0) {
       objeto = Alfabeto(caracteres);
-      output << objeto;
-      output << std::endl;
+      if (Comprobar(cadena, objeto) == false) {
+        output << "La cadena no se corresponde con el alfabeto"; 
+        output << std::endl;
+      } else {
+        output << objeto;
+        output << std::endl;
+      }
     }
     iterador++;
   }
@@ -127,13 +164,21 @@ void OpcionLongitud(std::string fichero_entrada, std::string fichero_salida) {
   std::string cadena; 
   int iterador{1}; 
   Cadena objeto;
+  Alfabeto alfabeto;
   int size{0};
   while(input >> cadena) {
     if(iterador % 2 != 0) {
       objeto = Cadena(cadena);
-      size = objeto.longitud();
-      output << size;
-      output << std::endl;
+    } else if (iterador % 2 == 0) {
+      alfabeto = Alfabeto(cadena);
+      if (Comprobar(objeto, alfabeto) == false){
+        output << "La cadena no se corresponde con el aflabeto";
+        output << std::endl;
+      } else {
+        size = objeto.getSize(); 
+        output << size; 
+        output << std::endl;
+      }
     }
     iterador++;
   }
@@ -156,12 +201,20 @@ void OpcionInversa(std::string fichero_entrada, std::string fichero_salida) {
   std::string cadena; 
   int iterador{1}; 
   Cadena objeto;
+  Alfabeto alfabeto;
   while(input >> cadena) {
     if(iterador % 2 != 0) {
       objeto = Cadena(cadena);
-      objeto.reverse();
-      output << objeto;
-      output << std::endl;
+    } else if (iterador % 2 == 0) {
+      alfabeto = Alfabeto(cadena);
+      if (Comprobar(objeto, alfabeto) == false){
+        output << "La cadena no se corresponde con el aflabeto";
+        output << std::endl;
+      } else {
+        objeto.reverse(); 
+        output << objeto; 
+        output << std::endl;
+      }
     }
     iterador++;
   }
@@ -182,13 +235,21 @@ void OpcionPrefijo(std::string fichero_entrada, std::string fichero_salida) {
     exit(EXIT_SUCCESS);
   }
   Cadena objeto; 
+  Alfabeto alfabeto;
   std::string elementos;
   int iterador{1};
   while(input >> elementos) {
     if(iterador % 2 != 0) {
       objeto = Cadena(elementos);
-      out << objeto.prefijos(); 
-      out << std::endl;
+    } else if (iterador % 2 == 0) {
+      alfabeto = Alfabeto(elementos);
+      if (Comprobar(objeto, alfabeto) == false){
+        out << "La cadena no se corresponde con el aflabeto";
+        out << std::endl;
+      } else {
+        out << objeto.prefijos(); 
+        out << std::endl;
+      }
     }
     iterador++;
   }
@@ -208,16 +269,23 @@ void OpcionSufijo(std::string fichero_entrada, std::string fichero_salida) {
     exit(EXIT_SUCCESS);
   }
   Cadena objeto; 
+  Alfabeto alfabeto;
   std::string elementos;
   int iterador{1};
   while(input >> elementos) {
     if(iterador % 2 != 0) {
       objeto = Cadena(elementos);
-      out << objeto.sufijos();
-      out << std::endl;
+    } else if (iterador % 2 == 0) {
+      alfabeto = Alfabeto(elementos);
+      if (Comprobar(objeto, alfabeto) == false){
+        out << "La cadena no se corresponde con el aflabeto";
+        out << std::endl;
+      } else {
+        out << objeto.sufijos(); 
+        out << std::endl;
+      }
     }
     iterador++;
   }
 }
 
-void OpcionN(std::string fichero_entrada, std::string fichero_salida, int valorN){}

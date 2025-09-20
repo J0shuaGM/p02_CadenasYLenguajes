@@ -20,6 +20,10 @@
 
 #include <iostream>
 
+#include "alfabeto.h"
+#include "cadena.h"
+#include "lenguaje.h"
+
 void Usage(int argc, char *argv[]);
 
 void OpcionAlfabeto(std::string fichero_entrada, std::string fichero_salida); 
@@ -27,7 +31,7 @@ void OpcionLongitud(std::string fichero_entrada, std::string fichero_salida);
 void OpcionInversa(std::string fichero_entrada, std::string fichero_salida);
 void OpcionPrefijo(std::string fichero_entrada, std::string fichero_salida);
 void OpcionSufijo(std::string fichero_entrada, std::string fichero_salida);
-void OpcionN(std::string fichero_entrada, std::string fichero_salida, int numero);
+bool Comprobar(Cadena cadena, Alfabeto alfabeto);
 
 void Opcode(std::string fichero_entrada, std::string fichero_salida, int numero);
 

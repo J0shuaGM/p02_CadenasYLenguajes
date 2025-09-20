@@ -40,6 +40,12 @@ class Cadena {
     Lenguaje sufijos(void);
     void clear(void) { cadena_.clear(); }
 
+    //Getters y setters
+    std::vector<char> getCadena(void) { return cadena_; }
+    int getSize(void) { return longitud_; }
+    void setCadena(std::vector<char> cadena) { cadena_ = cadena; }
+    void setSize(int size) {longitud_ = size; }
+
 
     // Sobrecarga de operadores
     friend std::istream& operator>>(std::istream& entrada, Cadena& cadena);

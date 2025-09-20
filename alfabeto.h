@@ -32,6 +32,14 @@ class Alfabeto {
     // Destructor
     ~Alfabeto() {}
 
+    //Getters y setters
+    std::set<char> getSimbolos(void) { return simbolos_; }
+    void setSimbolos(std::set<char> simbolos) { simbolos_ = simbolos; }
+
+    //insert y search
+    void insertar(char c);
+    bool search(char c);
+
     // Sobrecarga de operadores de inserción y extracción
     friend std::istream& operator>>(std::istream& entrada, Alfabeto& simbolos);
     friend std::ostream& operator<<(std::ostream& salida, const Alfabeto& simbolos);

@@ -68,3 +68,16 @@ std::ostream& operator<<(std::ostream& salida, const Alfabeto& simbolos) {
   salida << "}";
   return salida;
 } 
+
+void Alfabeto::insertar(char c) {
+  simbolos_.insert(c);
+}
+
+bool Alfabeto::search(char c) {
+  if(simbolos_.find(c) == simbolos_.end()) {
+    return false;
+  } else if (c == '&') {
+    return true;
+  }
+  return true;
+}
