@@ -70,6 +70,7 @@ Lenguaje Cadena::sufijos() {
   Cadena cadena("&");
   sufijos.insertar(cadena);
   cadena.clear();
+  if (cadena_.size() == 1 && cadena_[0] == '&') return sufijos;
   for(int i = cadena_.size() -1 ; i >= 0; --i) {
     for(int j = cadena_.size() -1 ; j >= i; j--) {
       aux += cadena_[j];
@@ -95,6 +96,7 @@ Lenguaje Cadena::prefijos() {
   Cadena cadena("&");
   prefijo.insertar(cadena);
   cadena.clear();
+  if (cadena_.size() == 1 && cadena_[0] == '&') return prefijo;
   for(int i = 0; i != cadena_.size(); ++i) {
     for(int j = 0; j <= i; j++) {
       aux += cadena_[j];

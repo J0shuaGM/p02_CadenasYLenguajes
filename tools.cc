@@ -42,6 +42,7 @@ void Usage(int argc, char *argv[]) {
         std::cout << "3: Inversa: escribir en el fichero de salida la inversa de cada cadena de entrada." << std::endl;
         std::cout << "4: Prefijos: escribir en el fichero de salida el conjunto de cadenas que son prefijos de la cadena de entrada correspondiente." << std::endl;
         std::cout << "5: Sufijos: escribir en el fichero de salida el conjunto de cadenas que son sufijos de cada cadena de entrada correspondiente." << std::endl;
+        std::cout << "6: Comprobacion: comprobar si la cadena pertenece al alfabeto y escribir en el fichero de salida OK o ERROR" << std::endl;
         exit(EXIT_SUCCESS);
       } else {
         std::cerr << argv[0] << ": Modo de empleo: ./p02_strings filein.txt fileout.txt opcode" << std::endl;
@@ -69,7 +70,7 @@ void Usage(int argc, char *argv[]) {
  * @param fichero_salida Nombre del fichero de salida donde escribiremos los resultados obtenidos
  * @param opcion Numero de la opcion a realizar
 */
-void Opcode(std::string fichero_entrada, std::string fichero_salida, int opcion) {
+void Opcode(const std::string& fichero_entrada, const std::string& fichero_salida, int opcion) {
   switch (opcion) {
   case 1: 
     OpcionAlfabeto(fichero_entrada, fichero_salida);
@@ -87,6 +88,9 @@ void Opcode(std::string fichero_entrada, std::string fichero_salida, int opcion)
     OpcionSufijo(fichero_entrada, fichero_salida);
     break;
   default:
+    break;
+  case 6: 
+    ImprimirComprobacion(fichero_entrada, fichero_salida);
     break;
   }
 }
@@ -119,7 +123,7 @@ bool Comprobar(Cadena cadena, Alfabeto alfabeto) {
  * @param fichero_entrada Nombre del fichero de entrada que usaremos para trabajar
  * @param fichero_salida Nombre del fichero de salida donde escribiremos los resultados obtenidos
 */
-void OpcionAlfabeto(std::string fichero_entrada, std::string fichero_salida) {
+void OpcionAlfabeto(const std::string& fichero_entrada, const std::string& fichero_salida) {
   std::ifstream input(fichero_entrada); 
   std::ofstream output(fichero_salida); 
   if(!input.is_open()) {
@@ -139,7 +143,7 @@ void OpcionAlfabeto(std::string fichero_entrada, std::string fichero_salida) {
         output << "La cadena no se corresponde con el alfabeto"; 
         output << std::endl;
       } else {
-        output << objeto;
+        output << cadena << ": " << objeto;
         output << std::endl;
       }
     }
@@ -154,7 +158,7 @@ void OpcionAlfabeto(std::string fichero_entrada, std::string fichero_salida) {
  * @param fichero_entrada Nombre del fichero de entrada que usaremos para trabajar
  * @param fichero_salida Nombre del fichero de salida donde escribiremos los resultados obtenidos
 */
-void OpcionLongitud(std::string fichero_entrada, std::string fichero_salida) {
+void OpcionLongitud(const std::string& fichero_entrada, const std::string& fichero_salida) {
   std::ifstream input(fichero_entrada); 
   std::ofstream output(fichero_salida);
   if(!input.is_open()) {
@@ -191,7 +195,7 @@ void OpcionLongitud(std::string fichero_entrada, std::string fichero_salida) {
  * @param fichero_entrada Nombre del fichero de entrada que usaremos para trabajar
  * @param fichero_salida Nombre del fichero de salida donde escribiremos los resultados obtenidos
 */
-void OpcionInversa(std::string fichero_entrada, std::string fichero_salida) {
+void OpcionInversa(const std::string& fichero_entrada, const std::string& fichero_salida) {
   std::ifstream input(fichero_entrada); 
   std::ofstream output(fichero_salida);
   if(!input.is_open()) {
@@ -211,6 +215,7 @@ void OpcionInversa(std::string fichero_entrada, std::string fichero_salida) {
         output << "La cadena no se corresponde con el aflabeto";
         output << std::endl;
       } else {
+        output << objeto << " -> ";
         objeto.reverse(); 
         output << objeto; 
         output << std::endl;
@@ -227,7 +232,7 @@ void OpcionInversa(std::string fichero_entrada, std::string fichero_salida) {
  * @param fichero_entrada Nombre del fichero de entrada que usaremos para trabajar
  * @param fichero_salida Nombre del fichero de salida donde escribiremos los resultados obtenidos
 */
-void OpcionPrefijo(std::string fichero_entrada, std::string fichero_salida) {
+void OpcionPrefijo(const std::string& fichero_entrada, const std::string& fichero_salida) {
   std::ifstream input(fichero_entrada); 
   std::ofstream out(fichero_salida);
   if(!input.is_open()) {
@@ -256,12 +261,13 @@ void OpcionPrefijo(std::string fichero_entrada, std::string fichero_salida) {
 }
 
 
+
 /**
  * @brief Opcion que da los sufijos de las cadenas del fichero de entrada en el fichero de salida
  * @param fichero_entrada Nombre del fichero de entrada que usaremos para trabajar
  * @param fichero_salida Nombre del fichero de salida donde escribiremos los resultados obtenidos
 */
-void OpcionSufijo(std::string fichero_entrada, std::string fichero_salida) {
+void OpcionSufijo(const std::string& fichero_entrada, const std::string& fichero_salida) {
   std::ifstream input(fichero_entrada); 
   std::ofstream out(fichero_salida);
   if(!input.is_open()) {
@@ -289,3 +295,37 @@ void OpcionSufijo(std::string fichero_entrada, std::string fichero_salida) {
   }
 }
 
+
+
+/**
+ * @brief Funcion que comprueba si la cadena pertenece al alfabeto y escribe en el fichero de salida OK o ERROR
+ * @param fichero_entrada Nombre del fichero de entrada que usaremos para trabajar
+ * @param fichero_salida Nombre del fichero de salida donde escribiremos los resultados obtenidos
+*/
+void ImprimirComprobacion(const std::string& fichero_entrada, const std::string& fichero_salida) {
+  std::ifstream input(fichero_entrada); 
+  std::ofstream output(fichero_salida);
+  if(!input.is_open()) {
+    std::cerr << "El fichero de entrada no se ha podido abrir" << std::endl;
+    exit(EXIT_SUCCESS);
+  }
+  Cadena objeto; 
+  Alfabeto alfabeto;
+  std::string elementos;
+  int iterador{1};
+  while(input >> elementos) {
+    if(iterador % 2 != 0) {
+      objeto = Cadena(elementos);
+    } else if (iterador % 2 == 0) {
+      alfabeto = Alfabeto(elementos);
+      if (Comprobar(objeto, alfabeto) == false){
+        output << "ERROR";
+        output << std::endl;
+      } else {
+        output << "OK";
+        output << std::endl;
+      }
+    }
+    iterador++;
+  }
+}

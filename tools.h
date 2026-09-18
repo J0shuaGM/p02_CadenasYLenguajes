@@ -26,13 +26,14 @@
 
 void Usage(int argc, char *argv[]);
 
-void OpcionAlfabeto(std::string fichero_entrada, std::string fichero_salida); 
-void OpcionLongitud(std::string fichero_entrada, std::string fichero_salida); 
-void OpcionInversa(std::string fichero_entrada, std::string fichero_salida);
-void OpcionPrefijo(std::string fichero_entrada, std::string fichero_salida);
-void OpcionSufijo(std::string fichero_entrada, std::string fichero_salida);
+void OpcionAlfabeto(const std::string& fichero_entrada, const std::string& fichero_salida); 
+void OpcionLongitud(const std::string& fichero_entrada, const std::string& fichero_salida); 
+void OpcionInversa(const std::string& fichero_entrada, const std::string& fichero_salida);
+void OpcionPrefijo(const std::string& fichero_entrada, const std::string& fichero_salida);
+void OpcionSufijo(const std::string& fichero_entrada, const std::string& fichero_salida);
+void ImprimirComprobacion(const std::string& fichero_entrada, const std::string& fichero_salida);
 bool Comprobar(Cadena cadena, Alfabeto alfabeto);
 
-void Opcode(std::string fichero_entrada, std::string fichero_salida, int numero);
+void Opcode(const std::string& fichero_entrada, const std::string& fichero_salida, int numero);
 
 #endif
